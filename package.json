@@ -1,6 +1,7 @@
 {
   "name": "crud-app",
   "version": "1.0.0",
+  "description": "CRUD básico con Express y SQLite listo para Railway",
   "main": "server.js",
   "type": "module",
   "scripts": {
