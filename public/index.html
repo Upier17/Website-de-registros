@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>CRUD App</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Gestión de Personas</h1>
+
+  <form id="form">
+    <input type="text" id="nombre" placeholder="Nombre" required>
+    <input type="number" id="edad" placeholder="Edad" required>
+    <input type="text" id="ciudad" placeholder="Ciudad" required>
+    <button type="submit">Agregar</button>
+  </form>
+
+  <table>
+    <thead>
+      <tr><th>ID</th><th>Nombre</th><th>Edad</th><th>Ciudad</th><th>Acciones</th></tr>
+    </thead>
+    <tbody id="tabla"></tbody>
+  </table>
+
+  <script src="script.js"></script>
+</body>
+</html>

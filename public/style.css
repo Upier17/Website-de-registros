@@ -1,0 +1,142 @@
+/* ——— Estilo general ——— */
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #0a0a0a, #1c1c1c);
+  color: #f1f1f1;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+}
+
+/* ——— Título ——— */
+h1 {
+  margin-top: 40px;
+  font-size: 2.2em;
+  color: #e1b382;
+  text-shadow: 0 0 10px rgba(225,179,130,0.4);
+}
+
+/* ——— Formulario ——— */
+form {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin: 30px 0;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 15px 25px;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(255,255,255,0.05);
+}
+
+input {
+  background: rgba(255, 255, 255, 0.08);
+  border: none;
+  padding: 10px;
+  border-radius: 8px;
+  color: #f1f1f1;
+  outline: none;
+  width: 160px;
+  font-size: 1em;
+  transition: all 0.3s ease;
+}
+
+input:focus {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+button {
+  background: #e1b382;
+  border: none;
+  color: #1c1c1c;
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+button:hover {
+  background: #f3c892;
+  transform: translateY(-2px);
+}
+
+/* ——— Tabla ——— */
+table {
+  width: 90%;
+  max-width: 800px;
+  border-collapse: collapse;
+  margin-bottom: 50px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(255,255,255,0.05);
+}
+
+thead {
+  background-color: rgba(225, 179, 130, 0.15);
+}
+
+th, td {
+  padding: 12px 15px;
+  text-align: center;
+}
+
+th {
+  color: #f3c892;
+  letter-spacing: 0.5px;
+  font-size: 1.1em;
+}
+
+td {
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+tr:hover {
+  background-color: rgba(225, 179, 130, 0.05);
+}
+
+/* ——— Botones dentro de la tabla ——— */
+td button {
+  margin: 0 3px;
+  padding: 6px 10px;
+  font-size: 0.9em;
+  border-radius: 6px;
+}
+
+td button:first-child {
+  background: #5cb85c;
+  color: #fff;
+}
+
+td button:first-child:hover {
+  background: #6edb6e;
+}
+
+td button:last-child {
+  background: #d9534f;
+  color: #fff;
+}
+
+td button:last-child:hover {
+  background: #f15a4f;
+}
+
+/* ——— Responsividad ——— */
+@media (max-width: 600px) {
+  form {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  input {
+    width: 90%;
+  }
+
+  table {
+    font-size: 0.9em;
+  }
+}
