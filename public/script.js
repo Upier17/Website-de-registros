@@ -1,142 +1,66 @@
-// ====== CONFIGURACIÓN GENERAL ======
-const API_URL = "http://localhost:3000/api/personas";
+const tabla = document.getElementById("tabla");
+const form = document.getElementById("form");
 
-// ====== CARGAR PERSONAS ======
-document.addEventListener("DOMContentLoaded", loadPeople);
-
-function loadPeople() {
-  fetch(API_URL)
-    .then(res => res.json())
-    .then(data => renderTable(data))
-    .catch(err => console.error("Error al cargar:", err));
+async function cargar() {
+  const res = await fetch("/api/personas");
+  const personas = await res.json();
+  tabla.innerHTML = personas.map(p => `
+    <tr>
+      <td>${p.id}</td>
+      <td>${p.nombre}</td>
+      <td>${p.edad}</td>
+      <td>${p.ciudad}</td>
+      <td>
+        <button onclick="editar(${p.id}, '${p.nombre}', ${p.edad}, '${p.ciudad}')">Editar</button>
+        <button onclick="eliminar(${p.id})">Eliminar</button>
+      </td>
+    </tr>
+  `).join("");
 }
 
-function renderTable(people) {
-  const body = document.getElementById("moviesBody");
-  body.innerHTML = "";
-
-  people.forEach(person => {
-    const row = document.createElement("tr");
-
-    row.innerHTML = `
-      <td>${person.id}</td>
-      <td>${person.nombre}</td>
-      <td>${person.edad}</td>
-      <td>${person.ciudad}</td>
-      <td><button onclick="editPerson(${person.id})">✏️</button></td>
-      <td><button onclick="deletePerson(${person.id})">🗑️</button></td>
-    `;
-
-    row.addEventListener("click", (e) => {
-      if (!e.target.closest("button")) openModal(person);
-    });
-
-    body.appendChild(row);
-  });
-}
-
-// ====== FORMULARIO ======
-function openForm() {
-  document.getElementById("formContainer").style.display = "block";
-  document.getElementById("formTitle").textContent = "Agregar Persona";
-  clearForm();
-}
-
-function closeForm() {
-  document.getElementById("formContainer").style.display = "none";
-}
-
-function clearForm() {
-  document.getElementById("movie-id").value = "";
-  document.getElementById("title").value = "";
-  document.getElementById("genre").value = "";
-  document.getElementById("year").value = "";
-  document.getElementById("poster").value = "";
-  document.getElementById("description").value = "";
-  document.getElementById("trailer").value = "";
-}
-
-// ====== GUARDAR ======
-function saveMovie() {
-  const id = document.getElementById("movie-id").value;
-
-  const person = {
-    nombre: document.getElementById("title").value,
-    edad: document.getElementById("genre").value,
-    ciudad: document.getElementById("year").value
+form.addEventListener("submit", async e => {
+  e.preventDefault();
+  const datos = {
+    nombre: form.nombre.value,
+    edad: form.edad.value,
+    ciudad: form.ciudad.value
   };
-
-  if (id) {
-    updatePerson(id, person);
-  } else {
-    createPerson(person);
-  }
-}
-
-function createPerson(person) {
-  fetch(API_URL, {
+  await fetch("/api/personas", {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(person)
-  })
-    .then(() => {
-      closeForm();
-      loadPeople();
-    })
-    .catch(err => console.error("Error al crear:", err));
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify(datos)
+  });
+  form.reset();
+  cargar();
+});
+
+async function eliminar(id) {
+  await fetch(`/api/personas/${id}`, { method: "DELETE" });
+  cargar();
 }
 
-function updatePerson(id, person) {
-  fetch(`${API_URL}/${id}`, {
-    method: "PUT",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(person)
-  })
-    .then(() => {
-      closeForm();
-      loadPeople();
-    })
-    .catch(err => console.error("Error al editar:", err));
-}
+function editar(id, nombre, edad, ciudad) {
+  form.nombre.value = nombre;
+  form.edad.value = edad;
+  form.ciudad.value = ciudad;
 
-// ====== EDITAR ======
-function editPerson(id) {
-  fetch(`${API_URL}/${id}`)
-    .then(res => res.json())
-    .then(person => {
-      openForm();
-      document.getElementById("formTitle").textContent = "Editar Persona";
-
-      document.getElementById("movie-id").value = person.id;
-      document.getElementById("title").value = person.nombre;
-      document.getElementById("genre").value = person.edad;
-      document.getElementById("year").value = person.ciudad;
+  form.onsubmit = async (e) => {
+    e.preventDefault();
+    const datos = {
+      nombre: form.nombre.value,
+      edad: form.edad.value,
+      ciudad: form.ciudad.value
+    };
+    await fetch(`/api/personas/${id}`, {
+      method: "PUT",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify(datos)
     });
+    form.reset();
+    form.onsubmit = originalSubmit;
+    cargar();
+  };
 }
 
-// ====== ELIMINAR ======
-function deletePerson(id) {
-  if (!confirm("¿Seguro?")) return;
-
-  fetch(`${API_URL}/${id}`, { method: "DELETE" })
-    .then(() => loadPeople())
-    .catch(err => console.error("Error al eliminar:", err));
-}
-
-// ====== MODAL ======
-function openModal(person) {
-  document.getElementById("modalTitle").textContent = person.nombre;
-
-  document.getElementById("modalDescription").textContent =
-    `Edad: ${person.edad}\nCiudad: ${person.ciudad}`;
-
-  // Ocultamos elementos que no existen en personas
-  document.getElementById("modalImage").style.display = "none";
-  document.getElementById("modalTrailer").style.display = "none";
-
-  document.getElementById("movieModal").style.display = "flex";
-}
-
-function closeModal() {
-  document.getElementById("movieModal").style.display = "none";
-}
+const originalSubmit = form.onsubmit;
+cargar();
