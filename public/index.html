@@ -2,25 +2,88 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <title>CRUD App</title>
-  <link rel="stylesheet" href="style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Catálogo</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
-  <h1>Gestión de Personas</h1>
+  <div class="site-container">
 
-  <form id="form">
-    <input type="text" id="nombre" placeholder="Nombre" required>
-    <input type="number" id="edad" placeholder="Edad" required>
-    <input type="text" id="ciudad" placeholder="Ciudad" required>
-    <button type="submit">Agregar</button>
-  </form>
+    <header>
+      <h1>Catálogo de Películas</h1>
+    </header>
 
-  <table>
-    <thead>
-      <tr><th>ID</th><th>Nombre</th><th>Edad</th><th>Ciudad</th><th>Acciones</th></tr>
-    </thead>
-    <tbody id="tabla"></tbody>
-  </table>
+    <main class="container">
+
+      <h2>Lista de Películas</h2>
+      <button onclick="openForm()">Agregar</button>
+
+      <table id="moviesTable">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Título</th>
+            <th>Género</th>
+            <th>Año</th>
+            <th>Editar</th>
+            <th>Eliminar</th>
+          </tr>
+        </thead>
+        <tbody id="moviesBody"></tbody>
+      </table>
+
+    <!-- Formulario -->
+<div id="formContainer" class="form-box" style="display:none;">
+  <h3 id="formTitle">Agregar Película</h3>
+
+  <input type="hidden" id="movie-id">
+
+  <label for="title">Título</label>
+  <input id="title" type="text">
+
+  <label for="genre">Género</label>
+  <input id="genre" type="text">
+
+  <label for="year">Año</label>
+  <input id="year" type="number">
+
+  <label for="poster">Portada (URL)</label>
+  <input id="poster" type="text">
+
+  <label for="description">Descripción</label>
+  <textarea id="description"></textarea>
+
+  <label for="trailer">Trailer (YouTube)</label>
+  <input id="trailer" type="text">
+
+  <button onclick="saveMovie()">Guardar</button>
+  <button onclick="closeForm()">Cancelar</button>
+</div>
+
+
+    </main>
+
+    <!-- Modal -->
+    <div id="movieModal" class="modal" style="display:none;">
+      <div class="modal-content">
+        <button class="close" onclick="closeModal()">✖</button>
+
+        <h2 id="modalTitle"></h2>
+        <img id="modalImage" />
+
+        <p id="modalDescription"></p>
+
+        <iframe id="modalTrailer" width="100%" height="315" frameborder="0" allowfullscreen></iframe>
+      </div>
+    </div>
+
+    <footer>
+      <p>PI. Aplicación web dinámica en un servicio de la nube</p>
+      <p>Creado por: Alexander Leon ID:223983605</p>
+    </footer>
+
+  </div>
 
   <script src="script.js"></script>
 </body>
